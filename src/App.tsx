@@ -1,5 +1,7 @@
+import SignUp from "./pages/SignUp";
+
 const App = () => (
-  <div>Hello World</div>
+  <SignUp />
 );
 
 export default App;
