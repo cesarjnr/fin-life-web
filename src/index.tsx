@@ -5,8 +5,8 @@ import '@fontsource/poppins';
 
 import './index.css';
 import customTheme from './customTheme';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { App } from './App';
 
 ReactDOM.render(
   <React.StrictMode>

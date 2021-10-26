@@ -1,7 +1,5 @@
-import SignUp from "./pages/SignUp";
+import { SignUp } from "./pages/SignUp";
 
-const App = () => (
+export const App = () => (
   <SignUp />
 );
-
-export default App;
