@@ -3,11 +3,16 @@ import { useState } from 'react';
 
 const api = axios.create({ baseURL: process.env.API_BASE_URL });
 
-export const usePost = <T, U>(path: string, payload: U) => {
+export const usePost = <T>(path: string): [
+  <U>(payload: U) => void,
+  boolean,
+  string,
+  T | undefined
+] => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [createdResource, setCreatedResource] = useState<T>();
-  const [requestErrorMessage, setRequestErrorMessage] = useState<string>();
-  const makePostRequest = async () => {
+  const [requestErrorMessage, setRequestErrorMessage] = useState<string>("");
+  const makePostRequest = async <U>(payload: U) => {
     try {
       setIsLoading(true);
 

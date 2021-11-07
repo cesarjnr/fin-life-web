@@ -1,15 +1,26 @@
 import { Center, Box, Text, Flex, Spacer } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
+import { useForm } from "react-hook-form";
 
 import { CustomInput } from '../../components/CustomInput';
 import { usePost } from "../../hooks/usePost";
 
+interface UserFormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export const SignUp = () => {
+  const { handleSubmit, register } = useForm<UserFormData>();
   const [
     makePostRequest,
     isLoading,
     requestErromessage
-  ] = usePost('/users', {});
+  ] = usePost<any>('/users');
+  const onSubmit = (data: UserFormData) => {
+    makePostRequest<UserFormData>(data);
+  };
 
   return (
     <Center w="full" h="full">
@@ -55,14 +66,34 @@ export const SignUp = () => {
 
         <Spacer />
 
-        <Flex h="280px" direction="column">
-          <CustomInput placeholder="Nome" isPassword={false} />
+        <Flex
+          as="form"
+          h="280px"
+          direction="column"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <CustomInput
+            name="name"
+            placeholder="Nome"
+            isPassword={false}
+            register={register}
+          />
           <Spacer />
-          <CustomInput placeholder="Email" isPassword={false} />
+          <CustomInput
+            name="email"
+            placeholder="Email"
+            isPassword={false}
+            register={register}
+          />
           <Spacer />
-          <CustomInput placeholder="Senha" isPassword={true} />
+          <CustomInput
+            name ="password"
+            placeholder="Senha"
+            isPassword={true}
+            register={register}
+          />
           <Spacer />
-          <Button size="md" onClick={makePostRequest}>Criar Conta</Button>
+          <Button size="md" type="submit">Criar Conta</Button>
         </Flex>
 
         <Spacer />
