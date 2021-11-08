@@ -1,14 +1,11 @@
-import axios from 'axios';
-import { useState } from 'react';
+import axios from "axios";
+import { useState } from "react";
 
 const api = axios.create({ baseURL: process.env.API_BASE_URL });
 
-export const usePost = <T>(path: string): [
-  <U>(payload: U) => void,
-  boolean,
-  string,
-  T | undefined
-] => {
+export const usePost = <T>(
+  path: string
+): [<U>(payload: U) => void, boolean, string, T | undefined] => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [createdResource, setCreatedResource] = useState<T>();
   const [requestErrorMessage, setRequestErrorMessage] = useState<string>("");

@@ -2,7 +2,7 @@ import { Center, Box, Text, Flex, Spacer } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { useForm } from "react-hook-form";
 
-import { CustomInput } from '../../components/CustomInput';
+import { CustomInput } from "../../components/CustomInput";
 import { usePost } from "../../hooks/usePost";
 
 interface UserFormData {
@@ -13,11 +13,8 @@ interface UserFormData {
 
 export const SignUp = () => {
   const { handleSubmit, register } = useForm<UserFormData>();
-  const [
-    makePostRequest,
-    isLoading,
-    requestErromessage
-  ] = usePost<any>('/users');
+  const [makePostRequest, isLoading, requestErromessage] =
+    usePost<any>("/users");
   const onSubmit = (data: UserFormData) => {
     makePostRequest<UserFormData>(data);
   };
@@ -44,12 +41,7 @@ export const SignUp = () => {
             >
               Fin
             </Text>
-            <Text
-              as="span"
-              color="white"
-              fontSize="2xl"
-              fontWeight="semibold"
-            >
+            <Text as="span" color="white" fontSize="2xl" fontWeight="semibold">
               Life
             </Text>
           </Center>
@@ -87,13 +79,15 @@ export const SignUp = () => {
           />
           <Spacer />
           <CustomInput
-            name ="password"
+            name="password"
             placeholder="Senha"
             isPassword={true}
             register={register}
           />
           <Spacer />
-          <Button size="md" type="submit">Criar Conta</Button>
+          <Button size="md" type="submit">
+            Criar Conta
+          </Button>
         </Flex>
 
         <Spacer />
@@ -118,5 +112,5 @@ export const SignUp = () => {
         </Box>
       </Flex>
     </Center>
-  )
+  );
 };

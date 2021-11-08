@@ -2,8 +2,8 @@ import { useState } from "react";
 import { UseFormRegister, FieldValues } from "react-hook-form";
 import { InputGroup, Input, InputRightElement } from "@chakra-ui/input";
 import { Icon } from "@chakra-ui/icon";
-import { AiFillEye } from 'react-icons/ai';
-import { RiEyeCloseFill } from 'react-icons/ri';
+import { AiFillEye } from "react-icons/ai";
+import { RiEyeCloseFill } from "react-icons/ri";
 
 interface Props {
   name: string;
@@ -19,7 +19,8 @@ export const CustomInput = ({
   register
 }: Props) => {
   const [show, setShow] = useState<boolean>(false);
-  const getInputType = (): string => (!isPassword || show ? "text" : "password");
+  const getInputType = (): string =>
+    !isPassword || show ? "text" : "password";
   const handleClick = (): void => {
     setShow(!show);
   };
@@ -45,4 +46,4 @@ export const CustomInput = ({
       )}
     </InputGroup>
   );
-}
+};
