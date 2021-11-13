@@ -1,5 +1,6 @@
 import { Center, Box, Text, Flex, Spacer } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
+import { Spinner } from "@chakra-ui/spinner";
 import { useForm } from "react-hook-form";
 
 import { CustomInput } from "../../components/CustomInput";
@@ -13,8 +14,7 @@ interface UserFormData {
 
 export const SignUp = () => {
   const { handleSubmit, register } = useForm<UserFormData>();
-  const [makePostRequest, isLoading, requestErromessage] =
-    usePost<any>("/users");
+  const [makePostRequest, isLoading] = usePost<any>("/users");
   const onSubmit = (data: UserFormData) => {
     makePostRequest<UserFormData>(data);
   };
@@ -25,7 +25,7 @@ export const SignUp = () => {
         direction="column"
         w="500px"
         h="700px"
-        bg="customBlack.900"
+        bg="black.800"
         borderRadius="xl"
         py="39px"
         px="61px"
@@ -34,7 +34,7 @@ export const SignUp = () => {
           <Center>
             <Text
               as="span"
-              color="customGreen.500"
+              color="green.500"
               fontSize="2xl"
               fontWeight="semibold"
               lineHeight="none"
@@ -86,7 +86,11 @@ export const SignUp = () => {
           />
           <Spacer />
           <Button size="md" type="submit">
-            Criar Conta
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              'Criar Conta'
+            )}
           </Button>
         </Flex>
 
@@ -103,7 +107,7 @@ export const SignUp = () => {
           </Text>
           <Text
             align="center"
-            color="customGreen.500"
+            color="green.500"
             fontSize="sm"
             fontWeight="semibold"
           >

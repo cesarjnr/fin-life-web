@@ -6,19 +6,19 @@ const customTheme = extendTheme(
       body: "Poppins"
     },
     colors: {
-      customBlack: {
-        50: "#f2f2f2",
-        100: "#d9d9d9",
-        200: "#bfbfbf",
-        300: "#a6a6a6",
-        400: "#8c8c8c",
-        500: "#737373",
-        600: "#595959",
-        700: "#404040",
-        800: "#171717",
-        900: "#0d0d0d"
+      black: {
+        50: "#d9d9d9",
+        100: "#bfbfbf",
+        200: "#a6a6a6",
+        300: "#8c8c8c",
+        400: "#737373",
+        500: "#595959",
+        600: "#404040",
+        700: "#171717",
+        800: "#0d0d0d",
+        900: "#000000"
       },
-      customGreen: {
+      green: {
         50: "#dbffed",
         100: "#adffd2",
         200: "#7cffb6",
@@ -29,6 +29,19 @@ const customTheme = extendTheme(
         700: "#008035",
         800: "#004e1e",
         900: "#001c05"
+      },
+      red: 
+      {
+        50: '#ffe6df',
+        100: '#ffbab0',
+        200: '#ff8e7f',
+        300: '#ff614c',
+        400: '#ff351a',
+        500: '#e61b00',
+        600: '#b41300',
+        700: '#810b00',
+        800: '#500400',
+        900: '#210000',
       }
     },
     components: {
@@ -36,12 +49,12 @@ const customTheme = extendTheme(
         variants: {
           filled: {
             field: {
-              bg: "customBlack.800",
+              bg: "black.700",
               _hover: {
-                bg: "customBlack.800"
+                bg: "black.700"
               },
               _focus: {
-                bg: "customBlack.800"
+                bg: "black.700"
               },
               _placeholder: {
                 color: "whiteAlpha.400"
@@ -52,7 +65,7 @@ const customTheme = extendTheme(
       }
     }
   },
-  withDefaultColorScheme({ colorScheme: "customGreen" })
+  withDefaultColorScheme({ colorScheme: "green" })
 );
 
 export default customTheme;
