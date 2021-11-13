@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const api = axios.create({ baseURL: process.env.API_BASE_URL });
+const api = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 
 export const usePost = <T>(
   path: string
