@@ -2,21 +2,23 @@ import axios from "axios";
 import { useState } from "react";
 import { useToast } from "@chakra-ui/toast";
 
+interface UsePost {
+  makePostRequest: <T>(payload: T) => void;
+  isLoading: boolean;
+};
+
 const api = axios.create({ baseURL: process.env.REACT_APP_API_BASE_URL });
 
-export const usePost = <T>(
+export const usePost = (
   path: string
-): [<U>(payload: U) => void, boolean, T | undefined] => {
+): UsePost => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [createdResource, setCreatedResource] = useState<T>();
   const makePostRequest = async <U>(payload: U) => {
     try {
       setIsLoading(true);
 
-      const response = await api.post(path, payload);
-
-      setCreatedResource(response.data);
+      await api.post(path, payload);
     } catch (error: any) {
       if (error.response) {
         toast({
@@ -30,5 +32,5 @@ export const usePost = <T>(
     }
   };
 
-  return [makePostRequest, isLoading, createdResource];
+  return { makePostRequest, isLoading };
 };
