@@ -2,6 +2,8 @@ import { Center, Box, Text, Flex, Spacer } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { Spinner } from "@chakra-ui/spinner";
 import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { CustomInput } from "../../components/CustomInput";
 import { usePost } from "../../hooks/usePost";
@@ -12,8 +14,16 @@ interface UserFormData {
   password: string;
 }
 
+const validationSchema = yup.object({
+  name: yup.string().max(50, 'nome deve ser no máximo 50 caracteres').required('campo obrigatório'),
+  email: yup.string().email('email deve ser um email válido').required('campo obrigatório'),
+  password: yup.string().min(6, 'senha deve ser no mínimo 6 caracteres').max(16, 'senha dever ser no máximo 16 caracteres').required()
+});
+
 export const SignUp = () => {
-  const { handleSubmit, register } = useForm<UserFormData>();
+  const { handleSubmit, register, formState } = useForm<UserFormData>({
+    resolver: yupResolver(validationSchema)
+  });
   const [makePostRequest, isLoading] = usePost<any>("/users");
   const onSubmit = (data: UserFormData) => {
     makePostRequest<UserFormData>(data);
@@ -69,6 +79,7 @@ export const SignUp = () => {
             placeholder="Nome"
             isPassword={false}
             register={register}
+            errorMessage={formState.errors.name?.message}
           />
           <Spacer />
           <CustomInput
@@ -76,6 +87,7 @@ export const SignUp = () => {
             placeholder="Email"
             isPassword={false}
             register={register}
+            errorMessage={formState.errors.email?.message}
           />
           <Spacer />
           <CustomInput
@@ -83,6 +95,7 @@ export const SignUp = () => {
             placeholder="Senha"
             isPassword={true}
             register={register}
+            errorMessage={formState.errors.password?.message}
           />
           <Spacer />
           <Button size="md" type="submit">
