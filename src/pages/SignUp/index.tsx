@@ -15,17 +15,27 @@ interface UserFormData {
 }
 
 const validationSchema = yup.object({
-  name: yup.string().max(50, 'nome deve ser no máximo 50 caracteres').required('campo obrigatório'),
-  email: yup.string().email('email deve ser um email válido').required('campo obrigatório'),
-  password: yup.string().min(6, 'senha deve ser no mínimo 6 caracteres').max(16, 'senha dever ser no máximo 16 caracteres').required()
+  name: yup
+    .string()
+    .max(50, 'nome deve ser no máximo 50 caracteres')
+    .required('campo obrigatório'),
+  email: yup
+    .string()
+    .email('email deve ser um email válido')
+    .required('campo obrigatório'),
+  password: yup
+    .string()
+    .min(6, 'senha deve ser no mínimo 6 caracteres')
+    .max(16, 'senha dever ser no máximo 16 caracteres')
+    .required()
 });
 
 export const SignUp = () => {
   const { handleSubmit, register, formState } = useForm<UserFormData>({
     resolver: yupResolver(validationSchema)
   });
-  const [makePostRequest, isLoading] = usePost<any>("/users");
-  const onSubmit = (data: UserFormData) => {
+  const { makePostRequest, isLoading } = usePost("/users");
+  const componentHandleSubmit = (data: UserFormData) => {
     makePostRequest<UserFormData>(data);
   };
 
@@ -72,7 +82,7 @@ export const SignUp = () => {
           as="form"
           h="280px"
           direction="column"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(componentHandleSubmit)}
         >
           <CustomInput
             name="name"
@@ -100,7 +110,7 @@ export const SignUp = () => {
           <Spacer />
           <Button size="md" type="submit">
             {isLoading ? (
-              <Spinner />
+              <Spinner data-testid="spinner" />
             ) : (
               'Criar Conta'
             )}
