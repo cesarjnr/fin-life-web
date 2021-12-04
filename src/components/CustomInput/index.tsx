@@ -6,7 +6,7 @@ import { Icon } from "@chakra-ui/icon";
 import { AiFillEye } from "react-icons/ai";
 import { RiEyeCloseFill } from "react-icons/ri";
 
-interface Props {
+export interface CustomInputProps {
   name: string;
   placeholder: string;
   isPassword: boolean;
@@ -20,7 +20,7 @@ export const CustomInput = memo(({
   isPassword,
   register,
   errorMessage
-}: Props) => {
+}: CustomInputProps) => {
   const [show, setShow] = useState<boolean>(false);
   const getInputType = (): string =>
     !isPassword || show ? "text" : "password";
@@ -46,6 +46,7 @@ export const CustomInput = memo(({
               as={show ? RiEyeCloseFill : AiFillEye}
               cursor="pointer"
               onClick={handleClick}
+              data-testid={show ? "closedEyeIcon" : "openEyeIcon"}
             />
           </InputRightElement>
         )}
