@@ -17,17 +17,17 @@ interface UserFormData {
 const validationSchema = yup.object({
   name: yup
     .string()
-    .max(50, 'nome deve ser no máximo 50 caracteres')
-    .required('campo obrigatório'),
+    .required('campo obrigatório')
+    .max(50, 'nome deve ser no máximo 50 caracteres'),
   email: yup
     .string()
-    .email('email deve ser um email válido')
-    .required('campo obrigatório'),
+    .required('campo obrigatório')
+    .email('email deve ser um email válido'),
   password: yup
     .string()
+    .required('campo obrigatório')
     .min(6, 'senha deve ser no mínimo 6 caracteres')
     .max(16, 'senha dever ser no máximo 16 caracteres')
-    .required()
 });
 
 export const SignUp = () => {

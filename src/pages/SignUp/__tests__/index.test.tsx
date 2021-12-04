@@ -11,6 +11,13 @@ describe('SignUp', () => {
   const mockUsePost = usePost as jest.MockedFunction<typeof usePost>;
   const mockMakePostRequest = jest.fn();
 
+  beforeEach(() => {
+    mockUsePost.mockReturnValue({
+      makePostRequest: mockMakePostRequest,
+      isLoading: false
+    });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -29,11 +36,6 @@ describe('SignUp', () => {
   });
 
   it('Should render a text inside the button component when there is no post request in progress', async () => {
-    mockUsePost.mockReturnValue({
-      makePostRequest: mockMakePostRequest,
-      isLoading: false
-    });
-
     render(<SignUp />);
 
     const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
@@ -41,21 +43,77 @@ describe('SignUp', () => {
     expect(createAccountButton).toBeTruthy();
   });
 
-  xit('Should render the required input error messages', async () => {
-  });
+  it('Should render 3 required input error messages', async () => {
+    render(<SignUp />);
 
-  xit('Should render the input length error messages', async () => {
-  });
+    const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
 
-  xit('Should render the email input error message', async () => {
-  });
-
-  it('Should call the onSubmit handler if the form is invalid', async () => {
-    mockUsePost.mockReturnValue({
-      makePostRequest: mockMakePostRequest,
-      isLoading: false
+    await act(async () => {
+      userEvent.click(createAccountButton);
     });
 
+    const requiredFieldErrorMessages = screen.getAllByText('campo obrigatório');
+
+    expect(requiredFieldErrorMessages).toHaveLength(3);
+  });
+
+  it('Should render the min password length error message', async () => {
+    render(<SignUp />);
+
+    const passwordInput = screen.getByPlaceholderText('Senha');
+    const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
+    const passwordInputValue = faker.internet.password(5);
+
+    await act(async () => {
+      userEvent.type(passwordInput, passwordInputValue);
+      userEvent.click(createAccountButton);
+    });
+
+    const minInputLengthErrorMessage = screen.getByText('senha deve ser no mínimo 6 caracteres');
+
+    expect(minInputLengthErrorMessage).toBeTruthy();
+  });
+
+  it('Should render the error messages of name and password max length', async () => {
+    render(<SignUp />);
+
+    const nameInput = screen.getByPlaceholderText('Nome');
+    const passwordInput = screen.getByPlaceholderText('Senha');
+    const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
+    const nameInputValue = faker.random.alpha({ count: 51 });
+    const passwordInputValue = faker.internet.password(17);
+
+    await act(async () => {
+      userEvent.type(nameInput, nameInputValue);
+      userEvent.type(passwordInput, passwordInputValue);
+      userEvent.click(createAccountButton);
+    });
+
+    const maxNameLengthErrorMessage = screen.getByText('nome deve ser no máximo 50 caracteres');
+    const maxPasswordLengthErrorMessage = screen.getByText('senha dever ser no máximo 16 caracteres');
+
+    expect(maxNameLengthErrorMessage).toBeTruthy();
+    expect(maxPasswordLengthErrorMessage).toBeTruthy();
+  });
+
+  it('Should render the email input error message', async () => {
+    render(<SignUp />);
+
+    const emailInput = screen.getByPlaceholderText('Email');
+    const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
+    const emailInputValue = faker.random.alpha();
+
+    await act(async () => {
+      userEvent.type(emailInput, emailInputValue);
+      userEvent.click(createAccountButton);
+    });
+
+    const invalidEmailErrorMessage = screen.getByText('email deve ser um email válido');
+
+    expect(invalidEmailErrorMessage).toBeTruthy();
+  });
+
+  it('Should not call the onSubmit handler if the form is invalid', async () => {
     render(<SignUp />);
 
     const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
@@ -67,12 +125,7 @@ describe('SignUp', () => {
     expect(mockMakePostRequest).not.toHaveBeenCalled();
   });
 
-  it("Should not call the onSubmit handler if the form is valid", async () => {
-    mockUsePost.mockReturnValue({
-      makePostRequest: mockMakePostRequest,
-      isLoading: false
-    });
-
+  it("Should call the onSubmit handler if the form is valid", async () => {
     render(<SignUp />);
 
     const nameInput = screen.getByPlaceholderText('Nome');
