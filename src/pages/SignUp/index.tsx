@@ -38,7 +38,6 @@ export const SignUp = () => {
   const componentHandleSubmit = (data: UserFormData) => {
     makePostRequest<UserFormData>(data);
   };
-
   return (
     <Center w="full" h="full">
       <Flex
