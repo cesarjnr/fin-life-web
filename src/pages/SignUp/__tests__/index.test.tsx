@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen, act } from '@testing-library/react';
 import faker from 'faker';
+import { render, screen, act } from '@testing-library/react';
 
 import { SignUp } from '../index';
 import { usePost } from '../../../hooks/usePost';
@@ -32,7 +32,7 @@ describe('SignUp', () => {
 
     const spinner = screen.getByTestId('spinner');
 
-    expect(spinner).toBeTruthy();
+    expect(spinner).toBeInTheDocument();
   });
 
   it('Should render a text inside the button component when there is no post request in progress', async () => {
@@ -40,7 +40,7 @@ describe('SignUp', () => {
 
     const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
 
-    expect(createAccountButton).toBeTruthy();
+    expect(createAccountButton).toBeInTheDocument();
   });
 
   it('Should render 3 required input error messages', async () => {
@@ -71,7 +71,7 @@ describe('SignUp', () => {
 
     const minInputLengthErrorMessage = screen.getByText('senha deve ser no mínimo 6 caracteres');
 
-    expect(minInputLengthErrorMessage).toBeTruthy();
+    expect(minInputLengthErrorMessage).toBeInTheDocument();
   });
 
   it('Should render the error messages of name and password max length', async () => {
@@ -92,8 +92,8 @@ describe('SignUp', () => {
     const maxNameLengthErrorMessage = screen.getByText('nome deve ser no máximo 50 caracteres');
     const maxPasswordLengthErrorMessage = screen.getByText('senha dever ser no máximo 16 caracteres');
 
-    expect(maxNameLengthErrorMessage).toBeTruthy();
-    expect(maxPasswordLengthErrorMessage).toBeTruthy();
+    expect(maxNameLengthErrorMessage).toBeInTheDocument();
+    expect(maxPasswordLengthErrorMessage).toBeInTheDocument();
   });
 
   it('Should render the email input error message', async () => {
@@ -110,7 +110,7 @@ describe('SignUp', () => {
 
     const invalidEmailErrorMessage = screen.getByText('email deve ser um email válido');
 
-    expect(invalidEmailErrorMessage).toBeTruthy();
+    expect(invalidEmailErrorMessage).toBeInTheDocument();
   });
 
   it('Should not call the onSubmit handler if the form is invalid', async () => {
