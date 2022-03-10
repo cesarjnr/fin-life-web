@@ -1,5 +1,5 @@
-import { useState, memo } from "react";
-import { UseFormRegister, FieldValues } from "react-hook-form";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { InputGroup, Input, InputRightElement } from "@chakra-ui/input";
 import { FormControl, FormErrorMessage } from "@chakra-ui/form-control";
 import { Icon } from "@chakra-ui/icon";
@@ -10,23 +10,21 @@ export interface CustomInputProps {
   name: string;
   placeholder: string;
   isPassword: boolean;
-  register: UseFormRegister<FieldValues>;
-  errorMessage?: string;
 }
 
-export const CustomInput = memo(({
+export const CustomInput = ({
   name,
   placeholder,
-  isPassword,
-  register,
-  errorMessage
+  isPassword
 }: CustomInputProps) => {
   const [show, setShow] = useState<boolean>(false);
+  const { register, formState: { errors } } = useFormContext();
   const getInputType = (): string =>
     !isPassword || show ? "text" : "password";
   const handleClick = (): void => {
     setShow(!show);
   };
+  const errorMessage = errors[name]?.message;
 
   return (
     <FormControl isInvalid={Boolean(errorMessage)}>
@@ -56,4 +54,4 @@ export const CustomInput = memo(({
       )}
     </FormControl>
   );
-});
+};

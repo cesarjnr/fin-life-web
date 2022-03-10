@@ -1,25 +1,28 @@
 import userEvent from '@testing-library/user-event';
-import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { UseFormReturn, FormProvider } from 'react-hook-form';
 import { render, screen, act } from '@testing-library/react';
 
 import { CustomInputProps, CustomInput } from '../index';
+import { FieldValues } from 'react-hook-form';
 
 describe('CustomInput', () => {
-  const mockRegister = jest.fn() as jest.MockedFunction<UseFormRegister<FieldValues>>;
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  const methods = {
+    register: jest.fn(),
+    formState: { errors: {} }
+  } as unknown as UseFormReturn<FieldValues, object>;
 
   it('Should render the input without any icons and error messages', async () => {
     const props: CustomInputProps = {
       name: 'someName',
       placeholder: 'somePlaceholder',
-      isPassword: false,
-      register: mockRegister
+      isPassword: false
     };
 
-    render(<CustomInput {...props} />);
+    render(
+      <FormProvider {...methods}>
+        <CustomInput {...props} />
+      </FormProvider>
+    );
 
     const closedEyeIcon = screen.queryByTestId('closedEyeIcon');
     const openEyeIcon = screen.queryByTestId('openEyeIcon');
@@ -34,11 +37,14 @@ describe('CustomInput', () => {
     const props: CustomInputProps = {
       name: 'someName',
       placeholder: 'somePlaceholder',
-      isPassword: true,
-      register: mockRegister
+      isPassword: true
     };
 
-    render(<CustomInput {...props} />);
+    render(
+      <FormProvider {...methods}>
+        <CustomInput {...props} />
+      </FormProvider>
+    );
 
     const closedEyeIcon = screen.queryByTestId('closedEyeIcon');
     const openEyeIcon = screen.getByTestId('openEyeIcon');
@@ -51,11 +57,14 @@ describe('CustomInput', () => {
     const props: CustomInputProps = {
       name: 'someName',
       placeholder: 'somePlaceholder',
-      isPassword: true,
-      register: mockRegister
+      isPassword: true
     };
 
-    render(<CustomInput {...props} />);
+    render(
+      <FormProvider {...methods}>
+        <CustomInput {...props} />
+      </FormProvider>
+    );
 
     await act(async () => {
       const openEyeIconBeforeClick = screen.getByTestId('openEyeIcon');
@@ -76,11 +85,14 @@ describe('CustomInput', () => {
     const props: CustomInputProps = {
       name: 'someName',
       placeholder: 'somePlaceholder',
-      isPassword: true,
-      register: mockRegister
+      isPassword: true
     };
 
-    render(<CustomInput {...props} />);
+    render(
+      <FormProvider {...methods}>
+        <CustomInput {...props} />
+      </FormProvider>
+    );
 
     await act(async () => {
       const openEyeIconBeforeClick = screen.getByTestId('openEyeIcon');
@@ -102,16 +114,28 @@ describe('CustomInput', () => {
     expect(closedEyeIconAfterClicks).not.toBeInTheDocument();
   });
 
-  it('Should show the error message if one is passed', async () => {
+  it('Should show the error message if there is an error in the input', async () => {
     const props: CustomInputProps = {
       name: 'someName',
       placeholder: 'somePlaceholder',
-      isPassword: false,
-      register: mockRegister,
-      errorMessage: 'someErrorMessage'
+      isPassword: false
     };
+    const methods = {
+      register: jest.fn(),
+      formState: {
+        errors: {
+          someName: {
+            message: 'someErrorMessage'
+          }
+        }
+      }
+    } as unknown as UseFormReturn<FieldValues, object>;
 
-    render(<CustomInput {...props} />);
+    render(
+      <FormProvider {...methods}>
+        <CustomInput {...props} />
+      </FormProvider>
+    );
 
     const errorMessage = screen.getByText('someErrorMessage');
 

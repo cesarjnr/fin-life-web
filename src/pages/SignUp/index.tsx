@@ -1,7 +1,7 @@
 import { Center, Box, Text, Flex, Spacer } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { Spinner } from "@chakra-ui/spinner";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -31,13 +31,12 @@ const validationSchema = yup.object({
 });
 
 export const SignUp = () => {
-  const { handleSubmit, register, formState } = useForm<UserFormData>({
-    resolver: yupResolver(validationSchema)
-  });
+  const { handleSubmit, ...rest } = useForm<UserFormData>({ resolver: yupResolver(validationSchema) });
   const { makePostRequest, isLoading } = usePost("/users");
   const componentHandleSubmit = (data: UserFormData) => {
     makePostRequest<UserFormData>(data);
   };
+
   return (
     <Center w="full" h="full">
       <Flex
@@ -77,44 +76,40 @@ export const SignUp = () => {
 
         <Spacer />
 
-        <Flex
-          as="form"
-          h="280px"
-          direction="column"
-          onSubmit={handleSubmit(componentHandleSubmit)}
-        >
-          <CustomInput
-            name="name"
-            placeholder="Nome"
-            isPassword={false}
-            register={register}
-            errorMessage={formState.errors.name?.message}
-          />
-          <Spacer />
-          <CustomInput
-            name="email"
-            placeholder="Email"
-            isPassword={false}
-            register={register}
-            errorMessage={formState.errors.email?.message}
-          />
-          <Spacer />
-          <CustomInput
-            name="password"
-            placeholder="Senha"
-            isPassword={true}
-            register={register}
-            errorMessage={formState.errors.password?.message}
-          />
-          <Spacer />
-          <Button size="md" type="submit">
-            {isLoading ? (
-              <Spinner data-testid="spinner" />
-            ) : (
-              'Criar Conta'
-            )}
-          </Button>
-        </Flex>
+        <FormProvider handleSubmit={handleSubmit} {...rest} >
+          <Flex
+            as="form"
+            h="280px"
+            direction="column"
+            onSubmit={handleSubmit(componentHandleSubmit)}
+          >
+            <CustomInput
+              name="name"
+              placeholder="Nome"
+              isPassword={false}
+            />
+            <Spacer />
+            <CustomInput
+              name="email"
+              placeholder="Email"
+              isPassword={false}
+            />
+            <Spacer />
+            <CustomInput
+              name="password"
+              placeholder="Senha"
+              isPassword={true}
+            />
+            <Spacer />
+            <Button size="md" type="submit">
+              {isLoading ? (
+                <Spinner data-testid="spinner" />
+              ) : (
+                'Criar Conta'
+              )}
+            </Button>
+          </Flex>
+        </FormProvider>
 
         <Spacer />
 

@@ -61,8 +61,8 @@ describe('SignUp', () => {
     render(<SignUp />);
 
     const passwordInput = screen.getByPlaceholderText('Senha');
-    const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
     const passwordInputValue = faker.internet.password(5);
+    const createAccountButton = screen.getByRole('button', { name: 'Criar Conta' });
 
     await act(async () => {
       userEvent.type(passwordInput, passwordInputValue);
