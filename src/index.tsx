@@ -1,19 +1,11 @@
-import React from "react";
 import ReactDOM from "react-dom";
-import { ChakraProvider } from "@chakra-ui/react";
-import "@fontsource/poppins";
 
 import "./index.css";
-import customTheme from "./customTheme";
 import reportWebVitals from "./reportWebVitals";
 import { App } from "./App";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ChakraProvider theme={customTheme} resetCSS>
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>,
+  <App />,
   document.getElementById("root")
 );
 
